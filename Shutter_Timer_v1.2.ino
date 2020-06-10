@@ -32,11 +32,15 @@ void loop() {                                                  // this part of t
     Serial.print("Microseconds: ");
     Serial.println(Speed);               //display total microseconds in shutter interval
   
-
     float SS = (float)Speed/1000000;    // make a variable SS, which is how many seconds that the shutter open for
-    float SS2 = 1/SS;                   // make a variable SS2, which is the inverse of the SS, or 1/ the shutter speed
-    Serial.print("shutter speed: 1/");
-    Serial.println(SS2);                //display the shutter speed
+
+    Serial.print("shutter speed: ");
+    if (SS < 1) {                                   // if the SS variable is less than 1 second...
+      Serial.println("1/" + String(1/SS) + "s");    // ...display the shutter speed as the inverse of the SS, or 1/ the shutter speed
+    } else {                                        // else if SS is 1 second or longer...
+      Serial.println(String(SS) + "s");             // ...display it in full seconds.
+    }
+
     Serial.println();
     Start = 0;                         // reset Start to 0
     Stop = 0;                           //reset Stop to 0 . *** these are not necessarily needed, but makes errors more evident should they occur
