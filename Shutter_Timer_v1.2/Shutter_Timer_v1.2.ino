@@ -15,6 +15,7 @@ void setup() {                                                  //This part of t
   pinMode(signalPin,INPUT);
   Serial.begin(9600);                                          //opens a serial connection.
   attachInterrupt(digitalPinToInterrupt(signalPin), CLOCK, CHANGE);    //run the function CLOCK, every time the voltage on pin 2 changes.
+  delay(1000);
 
 }
 
