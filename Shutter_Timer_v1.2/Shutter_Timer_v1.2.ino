@@ -1,4 +1,5 @@
-//forked and cloned from cameradactyl
+//forked and cloned from cameradactyl:
+//https://github.com/cameradactyl/Shutter-Timer
 
 long Start;   // this is the time in microseconds that the shutter opens (the arduino runs a microsecond clock in the background always - it is reasonably accurate for this purpose)
 long Stop;    // this is the time in microseconds that the shutter closes
@@ -6,12 +7,14 @@ int Fired = 0;  // this is a flag indicating when the shutter has been fired com
 int Risingflag = 0;  // this is a flag that i set in my interrupt routine, Rising flag is set to = 1 when the voltage INCREASES in the interrupt
 int Fallingflag = 0;  // this is a flag that i set in the interrupt routine, Fallingflag is set to =1 when the voltage DECREASES in the interrupt
 
+const int signalPin = 2; //input-pin for reading the output of the phototransistor
+
 
 
 void setup() {                                                  //This part of the program is run exactly once on boot
-
+  pinMode(signalPin,INPUT);
   Serial.begin(9600);                                          //opens a serial connection.
-  attachInterrupt(digitalPinToInterrupt(2), CLOCK, CHANGE);    //run the function CLOCK, every time the voltage on pin 2 changes.
+  attachInterrupt(digitalPinToInterrupt(signalPin), CLOCK, CHANGE);    //run the function CLOCK, every time the voltage on pin 2 changes.
 
 }
 
@@ -47,10 +50,10 @@ void loop() {                                                  // this part of t
 }
 
 void CLOCK(){                     //this is the interrupt function, which is called everytime the voltage on pin 2 changes, no matter where in the main program loop that the computer is currently in
-  if(digitalRead(2) == HIGH){
+  if(digitalRead(signalPin) == HIGH){
     Risingflag = 1;                // if the voltage on pin 2 is high, set the Risingflag to 1 : this will trigger the function called Rising from the main loop, which will set a start time
   }
-  if(digitalRead(2) == LOW){        // . if the voltage on pin 2 is low, set the Fallingflag to 1 : this will trigger the function called Falling from the main loop, which will set the stop time, and also set the Fired flag to 1.
+  if(digitalRead(signalPin) == LOW){        // . if the voltage on pin 2 is low, set the Fallingflag to 1 : this will trigger the function called Falling from the main loop, which will set the stop time, and also set the Fired flag to 1.
     Fallingflag =1;
   }
 }
