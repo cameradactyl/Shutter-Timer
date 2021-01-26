@@ -1,3 +1,5 @@
+//forked and cloned from cameradactyl
+
 long Start;   // this is the time in microseconds that the shutter opens (the arduino runs a microsecond clock in the background always - it is reasonably accurate for this purpose)
 long Stop;    // this is the time in microseconds that the shutter closes
 int Fired = 0;  // this is a flag indicating when the shutter has been fired completely.  when fired =1, the shutter has been fired, and the computer needs to display the information related to the exposure time.
@@ -52,4 +54,3 @@ void CLOCK(){                     //this is the interrupt function, which is cal
     Fallingflag =1;
   }
 }
-
