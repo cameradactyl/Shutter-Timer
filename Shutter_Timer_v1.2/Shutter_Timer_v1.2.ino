@@ -7,34 +7,35 @@ long Stop;    // this is the time in microseconds that the shutter closes
 int Fired = 0;  // this is a flag indicating when the shutter has been fired completely.  when fired =1, the shutter has been fired, and the computer needs to display the information related to the exposure time.
 int Risingflag = 0;  // this is a flag that i set in my interrupt routine, Rising flag is set to = 1 when the voltage INCREASES in the interrupt
 int Fallingflag = 0;  // this is a flag that i set in the interrupt routine, Fallingflag is set to =1 when the voltage DECREASES in the interrupt
-
+int analogSignal = 0;
 
 
 const int signalPin = 2; //input-pin for reading the output of the phototransistor
 const int laserPin = 6; //Laser control via pin 7
 
-const int shutterSim = 1; // simulation of shutter time
+const int shutterSim = 10; // simulation of shutter time
 
 
 void setup() {                                                  //This part of the program is run exactly once on boot
   pinMode(signalPin,INPUT);
   pinMode(laserPin,OUTPUT);
-  digitalWrite(laserPin,LOW);
+  digitalWrite(laserPin,HIGH);
   Serial.begin(9600);                                          //opens a serial connection.
   attachInterrupt(digitalPinToInterrupt(signalPin), CLOCK, CHANGE);    //run the function CLOCK, every time the voltage on pin 2 changes.
   delay(1000);
-
+  
 }
 
 void loop() {                // this part of the program is run, in order, over and over again, start to finish, unless INTERRUPTED by our interrupt
-  LASERCONTROL();
+  //LASERCONTROL();
+  MEASUREMENT();
 }
 
 void LASERCONTROL(){
   digitalWrite(laserPin,HIGH);
   delay(shutterSim);
   digitalWrite(laserPin,LOW);
-  delay(shutterSim);
+  delay(2*shutterSim);
 }
 
 void MEASUREMENT(){
@@ -53,7 +54,7 @@ void MEASUREMENT(){
     Serial.print("Stop: ");
     Serial.println(Stop);
     long Speed = (Stop - Start);      // make a variable called speed, which is the total number of microseconds that the shutter is open for
-    Serial.print("Microseconds: ");
+    Serial.print("Milliseconds: ");
     Serial.println(Speed);               //display total microseconds in shutter interval
   
 
