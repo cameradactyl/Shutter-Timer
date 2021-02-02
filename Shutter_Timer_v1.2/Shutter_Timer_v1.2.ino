@@ -1,5 +1,6 @@
 //forked and cloned from cameradactyl:
-//https://github.com/cameradactyl/Shutter-Timer
+//https://github.com/cameradactyl/Shutter-Timercontrol 
+//adding of laser module
 
 long Start;   // this is the time in microseconds that the shutter opens (the arduino runs a microsecond clock in the background always - it is reasonably accurate for this purpose)
 long Stop;    // this is the time in microseconds that the shutter closes
