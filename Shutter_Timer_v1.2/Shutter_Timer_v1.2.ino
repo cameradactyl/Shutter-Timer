@@ -8,20 +8,37 @@ int Fired = 0;  // this is a flag indicating when the shutter has been fired com
 int Risingflag = 0;  // this is a flag that i set in my interrupt routine, Rising flag is set to = 1 when the voltage INCREASES in the interrupt
 int Fallingflag = 0;  // this is a flag that i set in the interrupt routine, Fallingflag is set to =1 when the voltage DECREASES in the interrupt
 
-const int signalPin = 2; //input-pin for reading the output of the phototransistor
 
+
+const int signalPin = 2; //input-pin for reading the output of the phototransistor
+const int laserPin = 6; //Laser control via pin 7
+
+const int shutterSim = 1; // simulation of shutter time
 
 
 void setup() {                                                  //This part of the program is run exactly once on boot
   pinMode(signalPin,INPUT);
+  pinMode(laserPin,OUTPUT);
+  digitalWrite(laserPin,LOW);
   Serial.begin(9600);                                          //opens a serial connection.
   attachInterrupt(digitalPinToInterrupt(signalPin), CLOCK, CHANGE);    //run the function CLOCK, every time the voltage on pin 2 changes.
   delay(1000);
 
 }
 
-void loop() {                                                  // this part of the program is run, in order, over and over again, start to finish, unless INTERRUPTED by our interrupt
-  if(Risingflag ==1){                       
+void loop() {                // this part of the program is run, in order, over and over again, start to finish, unless INTERRUPTED by our interrupt
+  LASERCONTROL();
+}
+
+void LASERCONTROL(){
+  digitalWrite(laserPin,HIGH);
+  delay(shutterSim);
+  digitalWrite(laserPin,LOW);
+  delay(shutterSim);
+}
+
+void MEASUREMENT(){
+    if(Risingflag ==1){                       
     Start = micros();       //set the variable Start to current microseconds
   Risingflag=0;           //reset the rising flag to 0, so that this function isnt called again until the shutter actually fires
   }
